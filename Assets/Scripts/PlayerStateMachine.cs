@@ -23,13 +23,28 @@ public class PlayerStateMachine : MonoBehaviour
         m_CurrentState.ExecuteUpdate();
     }
 
+    private void FixedUpdate()
+    {
+        m_CurrentState.ExecuteFixedUpdate();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         m_CurrentState.ExecuteOnCollisionEnter(collision);
     }
 
+    private void OnCollisionExit(Collision collision)
+    {
+        m_CurrentState.ExecuteOnCollisionExit(collision);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         m_CurrentState.ExecuteOnTriggerEnter(other);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        m_CurrentState.ExecuteOnTriggerExit(other);
     }
 }
