@@ -4,19 +4,125 @@ using UnityEngine;
 
 public class FishingMinigame : MonoBehaviour
 {
-    private List<Fish> PossibleFish;
-    private GameObject m_Fish;
-    private GameObject m_Bobber;
+    [SerializeField] private Fish m_FishScriptableObject;
+    private List<Fish.Fishes> m_PossibleFish;
+    private Fish.Fishes m_CurrentFish;
+    [SerializeField] private Rigidbody2D m_FishBody;
+    [SerializeField] private Rigidbody2D m_Bobber;
+    [SerializeField] private GameObject m_ProgressBar;
     private float m_FishProgress;
+
+    private float m_Ceiling;
+    private float m_Floor;
+
+    //Fish Stats
+    private Texture2D m_FishIcon;
+    private string m_FishName;
+    private int m_FishDifficulty;
+    private float m_FishMovementInterval;
+
 
     private void OnEnable()
     {
-        
+        EventManager.StartListening("StopFishing", StopFishing);
+
+        m_PossibleFish = m_FishScriptableObject.FishList;
+
+        m_CurrentFish = m_PossibleFish[Random.Range(0, m_PossibleFish.Count)];
+
+        print(m_CurrentFish.Name);
+
+        Init();
+    }
+
+    private void Init()
+    {
+        m_Ceiling = gameObject.transform.Find("TopEdge").transform.localPosition.y;
+        m_Floor = gameObject.transform.Find("BottomEdge").transform.localPosition.y;
+        m_FishProgress = 50;
+        //m_FishIcon = m_CurrentFish.Icon;
+        m_FishName = m_CurrentFish.Name;
+        m_FishDifficulty = m_CurrentFish.Difficulty;
+        m_FishMovementInterval = m_CurrentFish.MovementInterval;
+        StartCoroutine(FishActionRoutine());
+    }
+
+
+    private void StopFishing()
+    {
+        gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        m_ProgressBar.transform.localScale = new Vector3(m_ProgressBar.transform.localScale.x, (m_FishProgress / 100), m_ProgressBar.transform.localScale.z);
+
+
+        if (Mathf.Abs(m_Bobber.transform.localPosition.y - m_FishBody.transform.localPosition.y) <= 12)
+        {
+            m_FishProgress += 10 * Time.deltaTime;
+            Debug.Log("Augmenting");
+        }
+        else
+        {
+            m_FishProgress -= 15 * Time.deltaTime;
+            Debug.Log("Lowering");
+        }
+
+
+        if (m_Bobber.transform.localPosition.y > m_Ceiling)
+        {
+            m_Bobber.transform.localPosition = new Vector3(m_Bobber.transform.localPosition.x, m_Ceiling, m_Bobber.transform.localPosition.z);
+            m_Bobber.velocity = Vector2.zero;
+        }
+        else if (m_Bobber.transform.localPosition.y < m_Floor)
+        {
+            m_Bobber.transform.localPosition = new Vector3(m_Bobber.transform.localPosition.x, m_Floor, m_Bobber.transform.localPosition.z);
+            m_Bobber.velocity = Vector2.zero;
+        }
+
+        if (m_FishBody.transform.localPosition.y > m_Ceiling)
+        {
+            m_FishBody.transform.localPosition = new Vector3(m_Bobber.transform.localPosition.x, m_Ceiling, m_Bobber.transform.localPosition.z);
+            m_FishBody.velocity = Vector2.zero;
+        }
+        else if (m_FishBody.transform.localPosition.y < m_Floor)
+        {
+            m_FishBody.transform.localPosition = new Vector3(m_Bobber.transform.localPosition.x, m_Floor, m_Bobber.transform.localPosition.z);
+            m_FishBody.velocity = Vector2.zero;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            m_Bobber.AddForce(Vector2.up * 4);
+        }
+    }
+
+    private IEnumerator FishActionRoutine()
+    {
+        while (m_FishProgress < 100 && m_FishProgress > 0)
+        {
+            yield return new WaitForSeconds(m_FishMovementInterval);
+
+            if (m_FishBody.transform.localPosition.y == 50)
+            {
+                m_FishBody.AddForce(new Vector2(0, Random.Range(m_FishDifficulty / 2, m_FishDifficulty) * -1));
+            }
+            else if (m_FishBody.transform.localPosition.y == -50)
+            {
+                m_FishBody.AddForce(new Vector2(0, Random.Range(m_FishDifficulty / 2, m_FishDifficulty)));
+            }
+            else
+            {
+                m_FishBody.AddForce(new Vector2(0, Random.Range(m_FishDifficulty / 2, m_FishDifficulty) * (Random.Range(0, 2) * 2 - 1)));
+            }
+        }
+
+        EventManager.TriggerEvent("StopFishing");
+
     }
 }

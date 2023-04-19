@@ -10,9 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f88ed45fd715c745a5173fef4753a10, type: 3}
-  m_Name: Pike
+  m_Name: Fish
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
-  Name: Pike
-  Difficulty: 2
-  MovementInterval: 0.5
+  FishList:
+  - Icon: {fileID: 0}
+    Name: Carp
+    Difficulty: 30
+    MovementInterval: 2
+  - Icon: {fileID: 0}
+    Name: Pike
+    Difficulty: 48
+    MovementInterval: 1.5
+  - Icon: {fileID: 0}
+    Name: Piranha
+    Difficulty: 16
+    MovementInterval: 0.25

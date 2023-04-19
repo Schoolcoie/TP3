@@ -5,8 +5,17 @@ using UnityEngine;
 [CreateAssetMenu]
 public class Fish : ScriptableObject
 {
-    public Texture2D Icon;
-    public string Name;
-    public int Difficulty;
-    public float MovementInterval;
+
+    [System.Serializable]
+    public struct Fishes
+    {
+        public Texture2D Icon;
+        public string Name;
+        public int Difficulty;
+        public float MovementInterval;
+    }
+
+    public List<Fishes> FishList = new List<Fishes>();
 }
+
+   

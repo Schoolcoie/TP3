@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class FishingPlayerState : PlayerState
 {
+    private float m_FishingProgress;
+    private Rigidbody2D m_BobberBody;
+    private FishingMinigame m_Fishing;
 
     public FishingPlayerState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
@@ -18,7 +21,10 @@ public class FishingPlayerState : PlayerState
 
     public override void ExecuteUpdate()
     {
-        Debug.Log("Fishing");
+        if (m_FishingProgress < 0 || m_FishingProgress > 100)
+        {
+            EventManager.TriggerEvent("StopFishing");
+        }
     }
 
     public override void ExecuteFixedUpdate()
