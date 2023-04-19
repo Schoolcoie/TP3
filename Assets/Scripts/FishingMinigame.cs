@@ -58,6 +58,11 @@ public class FishingMinigame : MonoBehaviour
     {
         m_ProgressBar.transform.localScale = new Vector3(m_ProgressBar.transform.localScale.x, (m_FishProgress / 100), m_ProgressBar.transform.localScale.z);
 
+        if (m_FishProgress > 100 || m_FishProgress < 0)
+        {
+            EventManager.TriggerEvent("StopFishing");
+        }
+
 
         if (Mathf.Abs(m_Bobber.transform.localPosition.y - m_FishBody.transform.localPosition.y) <= 12)
         {
@@ -122,7 +127,7 @@ public class FishingMinigame : MonoBehaviour
             }
         }
 
-        EventManager.TriggerEvent("StopFishing");
+
 
     }
 }

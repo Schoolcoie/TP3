@@ -25,3 +25,7 @@ MonoBehaviour:
     Name: Piranha
     Difficulty: 16
     MovementInterval: 0.25
+  - Icon: {fileID: 0}
+    Name: King Fish
+    Difficulty: 36
+    MovementInterval: 0.5
