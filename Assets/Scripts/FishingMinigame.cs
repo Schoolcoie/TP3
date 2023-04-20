@@ -8,9 +8,11 @@ public class FishingMinigame : MonoBehaviour
     private List<Fish.Fishes> m_PossibleFish;
     private Fish.Fishes m_CurrentFish;
     [SerializeField] private Rigidbody2D m_FishBody;
+    private Vector3 m_FishInitialPosition;
+    private Vector3 m_BobberInitialPosition;
     [SerializeField] private Rigidbody2D m_Bobber;
     [SerializeField] private GameObject m_ProgressBar;
-    private float m_FishProgress;
+    private float m_FishProgress = 100;
 
     private float m_Ceiling;
     private float m_Floor;
@@ -21,22 +23,25 @@ public class FishingMinigame : MonoBehaviour
     private int m_FishDifficulty;
     private float m_FishMovementInterval;
 
+    private void Awake()
+    {
+        m_FishInitialPosition = m_Bobber.transform.localPosition;
+        m_BobberInitialPosition = m_FishBody.transform.localPosition;
+        m_PossibleFish = m_FishScriptableObject.FishList;
+    }
 
     private void OnEnable()
     {
-        EventManager.StartListening("StopFishing", StopFishing);
-
-        m_PossibleFish = m_FishScriptableObject.FishList;
-
-        m_CurrentFish = m_PossibleFish[Random.Range(0, m_PossibleFish.Count)];
-
-        print(m_CurrentFish.Name);
-
         Init();
     }
 
     private void Init()
     {
+        
+        m_CurrentFish = m_PossibleFish[Random.Range(0, m_PossibleFish.Count)];
+        Debug.Log($"Current fish is: {m_CurrentFish.Name}");
+        m_Bobber.transform.localPosition = m_BobberInitialPosition;
+        m_FishBody.transform.localPosition = m_FishInitialPosition;
         m_Ceiling = gameObject.transform.Find("TopEdge").transform.localPosition.y;
         m_Floor = gameObject.transform.Find("BottomEdge").transform.localPosition.y;
         m_FishProgress = 50;
@@ -47,13 +52,6 @@ public class FishingMinigame : MonoBehaviour
         StartCoroutine(FishActionRoutine());
     }
 
-
-    private void StopFishing()
-    {
-        gameObject.SetActive(false);
-    }
-
-    // Update is called once per frame
     void Update()
     {
         m_ProgressBar.transform.localScale = new Vector3(m_ProgressBar.transform.localScale.x, (m_FishProgress / 100), m_ProgressBar.transform.localScale.z);
@@ -63,8 +61,7 @@ public class FishingMinigame : MonoBehaviour
             EventManager.TriggerEvent("StopFishing");
         }
 
-
-        if (Mathf.Abs(m_Bobber.transform.localPosition.y - m_FishBody.transform.localPosition.y) <= 12)
+        if (Mathf.Abs(m_Bobber.transform.localPosition.y - m_FishBody.transform.localPosition.y) <= 12) //add variable for bobber range
         {
             m_FishProgress += 10 * Time.deltaTime;
             Debug.Log("Augmenting");
@@ -103,7 +100,7 @@ public class FishingMinigame : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            m_Bobber.AddForce(Vector2.up * 4);
+            m_Bobber.AddForce(Vector2.up * 4); //Add bobber speed variable
         }
     }
 
@@ -113,11 +110,11 @@ public class FishingMinigame : MonoBehaviour
         {
             yield return new WaitForSeconds(m_FishMovementInterval);
 
-            if (m_FishBody.transform.localPosition.y == 50)
+            if (m_FishBody.transform.localPosition.y >= 50)
             {
                 m_FishBody.AddForce(new Vector2(0, Random.Range(m_FishDifficulty / 2, m_FishDifficulty) * -1));
             }
-            else if (m_FishBody.transform.localPosition.y == -50)
+            else if (m_FishBody.transform.localPosition.y <= -50)
             {
                 m_FishBody.AddForce(new Vector2(0, Random.Range(m_FishDifficulty / 2, m_FishDifficulty)));
             }
@@ -126,8 +123,5 @@ public class FishingMinigame : MonoBehaviour
                 m_FishBody.AddForce(new Vector2(0, Random.Range(m_FishDifficulty / 2, m_FishDifficulty) * (Random.Range(0, 2) * 2 - 1)));
             }
         }
-
-
-
     }
 }

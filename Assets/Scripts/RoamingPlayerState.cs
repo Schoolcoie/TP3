@@ -48,6 +48,8 @@ public class RoamingPlayerState : PlayerState
 
     public override void ExecuteOnTriggerEnter(Collider other)
     {
+        EventManager.TriggerEvent("StartInteraction");
+
         Debug.Log(other.name);
         if (other.gameObject.tag.Contains("Minigame"))
         {

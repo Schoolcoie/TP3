@@ -14,6 +14,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void ChangeState(PlayerState newState)
     {
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
         m_CurrentState = newState;
     }
 
