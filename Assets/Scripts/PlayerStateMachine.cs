@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerStateMachine : MonoBehaviour
 {
     private PlayerState m_CurrentState;
+    private PlayerState m_LastState;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,18 @@ public class PlayerStateMachine : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (m_CurrentState is PausedPlayerState)
+            {
+                EventManager.TriggerEvent("Unpause");
+            }
+            else if (m_CurrentState is RoamingPlayerState)
+            {
+                EventManager.TriggerEvent("Pause");
+            }
+        }
+
         m_CurrentState.ExecuteUpdate();
     }
 
@@ -49,3 +62,6 @@ public class PlayerStateMachine : MonoBehaviour
         m_CurrentState.ExecuteOnTriggerExit(other);
     }
 }
+
+
+

@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class FishingMinigame : MonoBehaviour
 {
+    //Objects
     [SerializeField] private Fish m_FishScriptableObject;
-    private List<Fish.Fishes> m_PossibleFish;
-    private Fish.Fishes m_CurrentFish;
     [SerializeField] private Rigidbody2D m_FishBody;
-    private Vector3 m_FishInitialPosition;
-    private Vector3 m_BobberInitialPosition;
     [SerializeField] private Rigidbody2D m_Bobber;
     [SerializeField] private GameObject m_ProgressBar;
-    private float m_FishProgress = 100;
 
+    //Minigame Stats
+    private List<Fish.Fishes> m_PossibleFish;
+    private Fish.Fishes m_CurrentFish;
+    private Vector3 m_FishInitialPosition;
+    private Vector3 m_BobberInitialPosition;
+    private float m_FishCatchProgress = 100;
     private float m_Ceiling;
     private float m_Floor;
 
@@ -36,15 +38,14 @@ public class FishingMinigame : MonoBehaviour
     }
 
     private void Init()
-    {
-        
+    {  
         m_CurrentFish = m_PossibleFish[Random.Range(0, m_PossibleFish.Count)];
         Debug.Log($"Current fish is: {m_CurrentFish.Name}");
         m_Bobber.transform.localPosition = m_BobberInitialPosition;
         m_FishBody.transform.localPosition = m_FishInitialPosition;
         m_Ceiling = gameObject.transform.Find("TopEdge").transform.localPosition.y;
         m_Floor = gameObject.transform.Find("BottomEdge").transform.localPosition.y;
-        m_FishProgress = 50;
+        m_FishCatchProgress = 50;
         //m_FishIcon = m_CurrentFish.Icon;
         m_FishName = m_CurrentFish.Name;
         m_FishDifficulty = m_CurrentFish.Difficulty;
@@ -54,22 +55,24 @@ public class FishingMinigame : MonoBehaviour
 
     void Update()
     {
-        m_ProgressBar.transform.localScale = new Vector3(m_ProgressBar.transform.localScale.x, (m_FishProgress / 100), m_ProgressBar.transform.localScale.z);
+        m_ProgressBar.transform.localScale = new Vector3(m_ProgressBar.transform.localScale.x, (m_FishCatchProgress / 100), m_ProgressBar.transform.localScale.z);
 
-        if (m_FishProgress > 100 || m_FishProgress < 0)
+        if (m_FishCatchProgress > 100)
+        {
+            EventManager.TriggerEvent("StopFishing");
+        }
+        else if (m_FishCatchProgress < 0)
         {
             EventManager.TriggerEvent("StopFishing");
         }
 
         if (Mathf.Abs(m_Bobber.transform.localPosition.y - m_FishBody.transform.localPosition.y) <= 12) //add variable for bobber range
         {
-            m_FishProgress += 10 * Time.deltaTime;
-            Debug.Log("Augmenting");
+            m_FishCatchProgress += 10 * Time.deltaTime; //add variables for progress decay and progress gain
         }
         else
         {
-            m_FishProgress -= 15 * Time.deltaTime;
-            Debug.Log("Lowering");
+            m_FishCatchProgress -= 15 * Time.deltaTime; 
         }
 
 
@@ -106,7 +109,7 @@ public class FishingMinigame : MonoBehaviour
 
     private IEnumerator FishActionRoutine()
     {
-        while (m_FishProgress < 100 && m_FishProgress > 0)
+        while (m_FishCatchProgress < 100 && m_FishCatchProgress > 0)
         {
             yield return new WaitForSeconds(m_FishMovementInterval);
 

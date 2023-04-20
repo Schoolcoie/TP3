@@ -1,20 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FishingPlayerState : PlayerState
+public class PausedPlayerState : PlayerState
 {
 
-    public FishingPlayerState(PlayerStateMachine stateMachine) : base(stateMachine)
+    public PausedPlayerState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
-        EventManager.StartListening("StopFishing", EndFishing);
+        EventManager.StartListening("Unpause", EndPause);
     }
 
-    private void EndFishing()
+    private void EndPause()
     {
         m_StateMachine.ChangeState(new RoamingPlayerState(m_StateMachine));
     }
-
 
     public override void ExecuteUpdate()
     {

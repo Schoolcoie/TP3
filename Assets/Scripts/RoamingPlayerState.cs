@@ -13,6 +13,7 @@ public class RoamingPlayerState : PlayerState
     {
         m_Body = stateMachine.GetComponent<Rigidbody>();
         EventManager.StartListening("MinigameFishing", StartFishing);
+        EventManager.StartListening("Pause", Pause);
     }
 
     private void StartFishing()
@@ -20,10 +21,17 @@ public class RoamingPlayerState : PlayerState
         m_StateMachine.ChangeState(new FishingPlayerState(m_StateMachine));
     }
 
+    private void Pause()
+    {
+        m_StateMachine.ChangeState(new PausedPlayerState(m_StateMachine));
+    }
+
 
     public override void ExecuteUpdate()
     {
-       if (m_CanTriggerMinigame)
+        
+
+        if (m_CanTriggerMinigame)
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
