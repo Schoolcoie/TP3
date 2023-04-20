@@ -23,6 +23,7 @@ public class RoamingPlayerState : PlayerState
 
     private void Pause()
     {
+        EventManager.StopListening("Pause", Pause);
         m_StateMachine.ChangeState(new PausedPlayerState(m_StateMachine));
     }
 

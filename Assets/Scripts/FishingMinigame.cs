@@ -46,7 +46,7 @@ public class FishingMinigame : MonoBehaviour
         m_Ceiling = gameObject.transform.Find("TopEdge").transform.localPosition.y;
         m_Floor = gameObject.transform.Find("BottomEdge").transform.localPosition.y;
         m_FishCatchProgress = 50;
-        //m_FishIcon = m_CurrentFish.Icon;
+        m_FishIcon = m_CurrentFish.Icon.texture;
         m_FishName = m_CurrentFish.Name;
         m_FishDifficulty = m_CurrentFish.Difficulty;
         m_FishMovementInterval = m_CurrentFish.MovementInterval;
@@ -59,6 +59,7 @@ public class FishingMinigame : MonoBehaviour
 
         if (m_FishCatchProgress > 100)
         {
+            FindObjectOfType<UserInterface>().UpdateInventory(m_CurrentFish.Icon);
             EventManager.TriggerEvent("StopFishing");
         }
         else if (m_FishCatchProgress < 0)

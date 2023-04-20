@@ -9,7 +9,7 @@ public class Fish : ScriptableObject
     [System.Serializable]
     public struct Fishes
     {
-        public Texture2D Icon;
+        public Sprite Icon;
         public string Name;
         public int Difficulty;
         public float MovementInterval;

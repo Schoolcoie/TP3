@@ -13,6 +13,7 @@ public class PausedPlayerState : PlayerState
 
     private void EndPause()
     {
+        EventManager.StopListening("Unpause", EndPause);
         m_StateMachine.ChangeState(new RoamingPlayerState(m_StateMachine));
     }
 

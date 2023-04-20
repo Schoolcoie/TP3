@@ -12,6 +12,7 @@ public class FishingPlayerState : PlayerState
 
     private void EndFishing()
     {
+        EventManager.StopListening("StopFishing", EndFishing);
         m_StateMachine.ChangeState(new RoamingPlayerState(m_StateMachine));
     }
 

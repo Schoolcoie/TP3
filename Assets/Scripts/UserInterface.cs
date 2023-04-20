@@ -11,6 +11,9 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private GameObject m_InventoryUI;
     [SerializeField] private GameObject m_FishingUI;
 
+    Sprite[] m_Inventory = new Sprite[8];
+    List<Image> m_InventorySlots = new List<Image>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +23,14 @@ public class UserInterface : MonoBehaviour
         EventManager.StartListening("StopInteracting", HideInteractionUI);
         EventManager.StartListening("Pause", ShowPauseMenu);
         EventManager.StartListening("Unpause", HidePauseMenu);
+
+        foreach (Transform t in transform.Find("InventoryUI"))
+        {
+            if (t.name.Contains("Inventory"))
+            {
+                m_InventorySlots.Add(t.GetChild(0).GetComponent<Image>());
+            }
+        } 
     }
 
 
@@ -45,12 +56,26 @@ public class UserInterface : MonoBehaviour
 
     private void ShowPauseMenu()
     {
-        if (false) //If inventory has all slots filled
+        if (CheckIfInventoryIsFilled())
         {
             Button b = m_PauseMenu.transform.Find("End Game Button").GetComponent<Button>();
             b.interactable = true;
         }
         m_PauseMenu.SetActive(true);
+    }
+
+    private bool CheckIfInventoryIsFilled()
+    {
+        for (int i = 0; i < m_Inventory.Length; i++)
+        {
+            if (m_Inventory[i] == null)
+            {
+                print("Inventory slot empty");
+                return false;
+            }
+            print("Inventory slot filled");
+        }
+        return true;
     }
 
     private void HidePauseMenu()
@@ -61,5 +86,21 @@ public class UserInterface : MonoBehaviour
     public void EndGame()
     {
         Debug.Log("Game Ended");
+        EventManager.TriggerEvent("EndGame");
+    }
+
+    public void UpdateInventory(Sprite icon)
+    {
+        for (int i = 0; i < m_Inventory.Length; i++)
+        {
+            if (m_Inventory[i] == null)
+            {
+                m_Inventory.SetValue(icon, i);
+
+                m_InventorySlots[i].sprite = icon;
+
+                break;
+            }
+        }
     }
 }
