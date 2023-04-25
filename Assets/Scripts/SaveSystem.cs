@@ -1,18 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
-public class SaveSystem : MonoBehaviour
+public static class SaveManager
 {
-    // Start is called before the first frame update
-    void Start()
+    public static void SaveData(EventManager eventManager)
     {
-        
+        BinaryFormatter formatter = new BinaryFormatter();
+        string saveDataPath = Application.persistentDataPath + "/game.save";
+
+        FileStream stream = new FileStream(saveDataPath, FileMode.Create);
+
+        GameData data = new GameData(eventManager);
+
+        formatter.Serialize(stream, data);
+        stream.Close();
     }
 
-    // Update is called once per frame
-    void Update()
+    public static GameData LoadData()
     {
-        
+        string path = Application.persistentDataPath + "/game.save";
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            GameData data = formatter.Deserialize(stream) as GameData;
+
+            return data;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

@@ -7,15 +7,7 @@ public class FishingPlayerState : PlayerState
 
     public FishingPlayerState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
-        EventManager.StartListening("StopFishing", EndFishing);
     }
-
-    private void EndFishing()
-    {
-        EventManager.StopListening("StopFishing", EndFishing);
-        m_StateMachine.ChangeState(new RoamingPlayerState(m_StateMachine));
-    }
-
 
     public override void ExecuteUpdate()
     {

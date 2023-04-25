@@ -40,14 +40,12 @@ public class FishingMinigame : MonoBehaviour
     private void Init()
     {  
         m_CurrentFish = m_PossibleFish[Random.Range(0, m_PossibleFish.Count)];
-        Debug.Log($"Current fish is: {m_CurrentFish.Name}");
+        Debug.Log($"Current fish is: {m_CurrentFish.ItemDrop.ToString()}");
         m_Bobber.transform.localPosition = m_BobberInitialPosition;
         m_FishBody.transform.localPosition = m_FishInitialPosition;
         m_Ceiling = gameObject.transform.Find("TopEdge").transform.localPosition.y;
         m_Floor = gameObject.transform.Find("BottomEdge").transform.localPosition.y;
         m_FishCatchProgress = 50;
-        m_FishIcon = m_CurrentFish.Icon.texture;
-        m_FishName = m_CurrentFish.Name;
         m_FishDifficulty = m_CurrentFish.Difficulty;
         m_FishMovementInterval = m_CurrentFish.MovementInterval;
         StartCoroutine(FishActionRoutine());
@@ -59,12 +57,14 @@ public class FishingMinigame : MonoBehaviour
 
         if (m_FishCatchProgress > 100)
         {
-            FindObjectOfType<UserInterface>().UpdateInventory(m_CurrentFish.Icon);
-            EventManager.TriggerEvent("StopFishing");
+            InventoryManager.GetInstance().AddInventoryItem(m_CurrentFish.ItemDrop);
+            //AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishCaught);
+            EventManager.TriggerEvent("OnMinigameEnd");
         }
         else if (m_FishCatchProgress < 0)
         {
-            EventManager.TriggerEvent("StopFishing");
+            //AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishLost);
+            EventManager.TriggerEvent("OnMinigameEnd");
         }
 
         if (Mathf.Abs(m_Bobber.transform.localPosition.y - m_FishBody.transform.localPosition.y) <= 12) //add variable for bobber range

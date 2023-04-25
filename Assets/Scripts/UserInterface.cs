@@ -6,33 +6,37 @@ using UnityEngine.UI;
 
 public class UserInterface : MonoBehaviour
 {
+    [SerializeField] private InventoryManager m_Inventory;
     [SerializeField] private GameObject m_PauseMenu;
     [SerializeField] private GameObject m_InteractUI;
     [SerializeField] private GameObject m_InventoryUI;
     [SerializeField] private GameObject m_FishingUI;
 
-    Sprite[] m_Inventory = new Sprite[8];
-    List<Image> m_InventorySlots = new List<Image>();
+    Image[] m_InventoryImages = new Image[8];
 
     // Start is called before the first frame update
     void Start()
     {
         EventManager.StartListening("MinigameFishing", ShowFishingUI);
-        EventManager.StartListening("StopFishing", HideFishingUI);
+        EventManager.StartListening("OnMinigameEnd", HideFishingUI);
         EventManager.StartListening("StartInteracting", ShowInteractionUI);
         EventManager.StartListening("StopInteracting", HideInteractionUI);
         EventManager.StartListening("Pause", ShowPauseMenu);
         EventManager.StartListening("Unpause", HidePauseMenu);
 
+        m_Inventory.AssignListener(UpdateInventory);
+
+        int i = 0;
+
         foreach (Transform t in transform.Find("InventoryUI"))
-        {
+        { 
             if (t.name.Contains("Inventory"))
             {
-                m_InventorySlots.Add(t.GetChild(0).GetComponent<Image>());
+                m_InventoryImages[i] = t.GetChild(0).GetComponent<Image>();
+                i++;
             }
         } 
     }
-
 
     private void ShowFishingUI()
     {
@@ -66,9 +70,9 @@ public class UserInterface : MonoBehaviour
 
     private bool CheckIfInventoryIsFilled()
     {
-        for (int i = 0; i < m_Inventory.Length; i++)
+        for (int i = 0; i < m_InventoryImages.Length; i++)
         {
-            if (m_Inventory[i] == null)
+            if (m_InventoryImages[i] == null)
             {
                 print("Inventory slot empty");
                 return false;
@@ -91,13 +95,11 @@ public class UserInterface : MonoBehaviour
 
     public void UpdateInventory(Sprite icon)
     {
-        for (int i = 0; i < m_Inventory.Length; i++)
+        for (int i = 0; i < m_InventoryImages.Length; i++)
         {
-            if (m_Inventory[i] == null)
+            if (m_InventoryImages[i].sprite.name == "UIMask")
             {
-                m_Inventory.SetValue(icon, i);
-
-                m_InventorySlots[i].sprite = icon;
+                m_InventoryImages[i].sprite = icon;
 
                 break;
             }

@@ -11,12 +11,18 @@ public class PlayerStateMachine : MonoBehaviour
     void Start()
     {
         m_CurrentState = new RoamingPlayerState(this);
+        EventManager.StartListening("OnMinigameEnd", EndMinigame);
     }
 
     public void ChangeState(PlayerState newState)
     {
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         m_CurrentState = newState;
+    }
+
+    private void EndMinigame()
+    {
+        ChangeState(new RoamingPlayerState(this));
     }
 
     // Update is called once per frame
@@ -60,6 +66,11 @@ public class PlayerStateMachine : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         m_CurrentState.ExecuteOnTriggerExit(other);
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.StopListening("OnMinigameEnd", EndMinigame);
     }
 }
 

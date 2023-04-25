@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class AudioPool : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private List<AudioSource> AudioSourcePool = new List<AudioSource>();
     void Start()
     {
-        
+        for (int i = 0; i < 5; i++)
+        {
+            AudioSource Source = new GameObject().AddComponent<AudioSource>();
+            AudioSourcePool.Add(Source);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public AudioSource GetValidAudioSource()
     {
-        
+        for (int i = 0; i < AudioSourcePool.Count; i++)
+        {
+            if (!AudioSourcePool[i].isPlaying)
+            {
+                return AudioSourcePool[i];
+            }
+        }
+
+        AudioSource source = new AudioSource();
+        AudioSourcePool.Add(source);
+        return source;
     }
 }

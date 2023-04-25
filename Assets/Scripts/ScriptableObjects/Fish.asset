@@ -13,19 +13,15 @@ MonoBehaviour:
   m_Name: Fish
   m_EditorClassIdentifier: 
   FishList:
-  - Icon: {fileID: 21300000, guid: 30a673d7a62378e47932c8f347005f24, type: 3}
-    Name: Carp
+  - Fish: 0
     Difficulty: 30
     MovementInterval: 2
-  - Icon: {fileID: 21300000, guid: 565da5a2126ed1f428947848c74c6ed9, type: 3}
-    Name: Pike
+  - Fish: 1
     Difficulty: 48
     MovementInterval: 1.5
-  - Icon: {fileID: 21300000, guid: d222e8b78ddad0641b5f6711f0962747, type: 3}
-    Name: Piranha
+  - Fish: 2
     Difficulty: 16
     MovementInterval: 0.25
-  - Icon: {fileID: 21300000, guid: e2b1625f941458747aa0da2bec744c66, type: 3}
-    Name: King Fish
+  - Fish: 3
     Difficulty: 36
     MovementInterval: 0.5

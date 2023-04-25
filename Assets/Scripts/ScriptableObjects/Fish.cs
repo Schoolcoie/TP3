@@ -9,8 +9,7 @@ public class Fish : ScriptableObject
     [System.Serializable]
     public struct Fishes
     {
-        public Sprite Icon;
-        public string Name;
+        public InventoryManager.Items ItemDrop;
         public int Difficulty;
         public float MovementInterval;
     }
