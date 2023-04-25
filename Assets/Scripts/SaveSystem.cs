@@ -4,19 +4,20 @@ using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
-public static class SaveManager
+public static class SaveSystem
 {
-    public static void SaveData(EventManager eventManager)
+    public static void SaveData(InventoryManager inventoryManager)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string saveDataPath = Application.persistentDataPath + "/game.save";
 
         FileStream stream = new FileStream(saveDataPath, FileMode.Create);
 
-        GameData data = new GameData(eventManager);
+        GameData data = new GameData(inventoryManager);
 
         formatter.Serialize(stream, data);
         stream.Close();
+
     }
 
     public static GameData LoadData()

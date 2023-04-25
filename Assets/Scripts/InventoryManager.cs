@@ -7,13 +7,14 @@ using UnityEngine.UI;
 public class InventoryManager : MonoBehaviour
 {
     private static InventoryManager Instance;
-
     void Start()
     {
         if (Instance == null)
         {
             Instance = this;
         }
+
+        EventManager.StartListening("OnLoadGame", LoadGame);
     }
 
     public static InventoryManager GetInstance()
@@ -26,12 +27,15 @@ public class InventoryManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    Items[] m_InventorySlots = new Items[8];
-    private Action<Sprite> OnInventoryAdd;
+    private Items[] m_InventorySlots = new Items[8];
+    public Items[] inventoryslots => m_InventorySlots;
+    private Action<Sprite, int> OnInventoryAdd;
+    private bool IsLoading = false;
 
     [System.Serializable]
     public enum Items
     {
+        Nothing,
         Carp,
         Pike,
         Piranha,
@@ -48,19 +52,82 @@ public class InventoryManager : MonoBehaviour
 
     [SerializeField] private List<ItemStruct> ItemData;
 
-    public void AssignListener(Action<Sprite> method)
+    private void Update()
+    {
+        //This is for testing, feel free to use it if you get bored
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            AddInventoryItem(Items.Carp);
+        }
+    }
+
+    public void AssignListener(Action<Sprite, int> method)
     {
         OnInventoryAdd += method;
     }
 
     public void AddInventoryItem(Items item)
     {
-        for (int i = 0; i < ItemData.Count; i++)
+        int indexref = -1;
+
+        for (int i = 0; i < m_InventorySlots.Length; i++)
         {
-            if (ItemData[i].item == item)
+            if (m_InventorySlots[i] == Items.Nothing)
             {
-                OnInventoryAdd?.Invoke(ItemData[i].icon);
+                m_InventorySlots[i] = item;
+                indexref = i;
+
+                if (!IsLoading)
+                    SaveSystem.SaveData(this);
+                break;
             }
         }
+
+        for (int y = 0; y < ItemData.Count; y++)
+        {
+            if (ItemData[y].item == item)
+            {
+                if (indexref > -1)
+                {
+                    OnInventoryAdd?.Invoke(ItemData[y].icon, indexref);
+                    break;
+                }
+                else
+                {
+                    Debug.Log("Inventory is full");
+                }
+                   
+            }
+        }
+    }
+
+    public bool CheckIfInventoryIsFilled()
+    {
+        for (int i = 0; i < m_InventorySlots.Length; i++)
+        {
+            if (m_InventorySlots[i] == Items.Nothing)
+            {
+                print("Inventory slot empty");
+                return false;
+            }
+            print("Inventory slot filled");
+        }
+        return true;
+    }
+
+    private void LoadGame()
+    {
+        IsLoading = true;
+        GameData data = SaveSystem.LoadData();
+        m_InventorySlots = new Items[8];
+
+        for (int i = 0; i < data.m_InventorySlots.Length; i++)
+        {
+            AddInventoryItem(data.m_InventorySlots[i]);
+        }
+
+        Debug.Log("Loaded");
+        IsLoading = false;
+        EventManager.TriggerEvent("Unpause");
     }
 }

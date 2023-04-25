@@ -5,13 +5,15 @@ using UnityEngine;
 public class PlayerStateMachine : MonoBehaviour
 {
     private PlayerState m_CurrentState;
-    private PlayerState m_LastState;
+    private Vector3 m_SpawnPosition;
 
     // Start is called before the first frame update
     void Start()
     {
+
         m_CurrentState = new RoamingPlayerState(this);
         EventManager.StartListening("OnMinigameEnd", EndMinigame);
+        EventManager.StartListening("OnLoadGame", ResetPosition);
     }
 
     public void ChangeState(PlayerState newState)
@@ -23,6 +25,11 @@ public class PlayerStateMachine : MonoBehaviour
     private void EndMinigame()
     {
         ChangeState(new RoamingPlayerState(this));
+    }
+
+    private void ResetPosition()
+    {
+        transform.position = m_SpawnPosition;
     }
 
     // Update is called once per frame
@@ -71,6 +78,7 @@ public class PlayerStateMachine : MonoBehaviour
     private void OnDestroy()
     {
         EventManager.StopListening("OnMinigameEnd", EndMinigame);
+        EventManager.StopListening("OnLoadGame", ResetPosition);
     }
 }
 

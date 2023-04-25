@@ -18,6 +18,7 @@ public class FishingMinigame : MonoBehaviour
     private float m_FishCatchProgress = 100;
     private float m_Ceiling;
     private float m_Floor;
+    private bool m_IsReeling = false;
 
     //Fish Stats
     private Texture2D m_FishIcon;
@@ -58,22 +59,32 @@ public class FishingMinigame : MonoBehaviour
         if (m_FishCatchProgress > 100)
         {
             InventoryManager.GetInstance().AddInventoryItem(m_CurrentFish.ItemDrop);
-            //AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishCaught);
+            AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishCaught);
             EventManager.TriggerEvent("OnMinigameEnd");
         }
         else if (m_FishCatchProgress < 0)
         {
-            //AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishLost);
+            AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishLost);
             EventManager.TriggerEvent("OnMinigameEnd");
         }
 
         if (Mathf.Abs(m_Bobber.transform.localPosition.y - m_FishBody.transform.localPosition.y) <= 12) //add variable for bobber range
         {
+            if (m_IsReeling == false)
+            {
+                AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishReeling);
+            }
             m_FishCatchProgress += 10 * Time.deltaTime; //add variables for progress decay and progress gain
+            m_IsReeling = true;
         }
         else
         {
-            m_FishCatchProgress -= 15 * Time.deltaTime; 
+            if (m_IsReeling == true)
+            {
+                AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishEscaping);
+            }
+            m_FishCatchProgress -= 15 * Time.deltaTime;
+            m_IsReeling = false;
         }
 
 
@@ -107,7 +118,6 @@ public class FishingMinigame : MonoBehaviour
             m_Bobber.AddForce(Vector2.up * 4); //Add bobber speed variable
         }
     }
-
     private IEnumerator FishActionRoutine()
     {
         while (m_FishCatchProgress < 100 && m_FishCatchProgress > 0)

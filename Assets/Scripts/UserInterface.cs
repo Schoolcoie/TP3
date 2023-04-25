@@ -60,7 +60,7 @@ public class UserInterface : MonoBehaviour
 
     private void ShowPauseMenu()
     {
-        if (CheckIfInventoryIsFilled())
+        if (m_Inventory.CheckIfInventoryIsFilled())
         {
             Button b = m_PauseMenu.transform.Find("End Game Button").GetComponent<Button>();
             b.interactable = true;
@@ -68,41 +68,23 @@ public class UserInterface : MonoBehaviour
         m_PauseMenu.SetActive(true);
     }
 
-    private bool CheckIfInventoryIsFilled()
-    {
-        for (int i = 0; i < m_InventoryImages.Length; i++)
-        {
-            if (m_InventoryImages[i] == null)
-            {
-                print("Inventory slot empty");
-                return false;
-            }
-            print("Inventory slot filled");
-        }
-        return true;
-    }
-
     private void HidePauseMenu()
     {
         m_PauseMenu.SetActive(false);
     }
 
-    public void EndGame()
+    public void UpdateInventory(Sprite icon, int index)
+    {
+        m_InventoryImages[index].sprite = icon;
+    }
+    public void LoadGameButton()
+    {
+        EventManager.TriggerEvent("OnLoadGame");
+    }
+
+    public void EndGameButton()
     {
         Debug.Log("Game Ended");
         EventManager.TriggerEvent("EndGame");
-    }
-
-    public void UpdateInventory(Sprite icon)
-    {
-        for (int i = 0; i < m_InventoryImages.Length; i++)
-        {
-            if (m_InventoryImages[i].sprite.name == "UIMask")
-            {
-                m_InventoryImages[i].sprite = icon;
-
-                break;
-            }
-        }
     }
 }

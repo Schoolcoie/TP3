@@ -5,11 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public class GameData
 {
-    public Dictionary<string, int> LevelRanks = new Dictionary<string, int>();
+    public InventoryManager.Items[] m_InventorySlots = new InventoryManager.Items[8];
 
-    public GameData(EventManager eventManager)
+    public GameData(InventoryManager inventoryManager)
     {
+        m_InventorySlots = inventoryManager.inventoryslots;
 
-        Debug.Log($"Saved {eventManager} to file with value {eventManager}");
+        Debug.Log("Saved inventory");
     }
 }
