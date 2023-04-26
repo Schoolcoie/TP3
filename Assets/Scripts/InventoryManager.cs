@@ -15,6 +15,8 @@ public class InventoryManager : MonoBehaviour
         }
 
         EventManager.StartListening("OnLoadGame", LoadGame);
+        EventManager.StartListening("Reset", ResetInventory);
+
     }
 
     public static InventoryManager GetInstance()
@@ -119,7 +121,8 @@ public class InventoryManager : MonoBehaviour
     {
         IsLoading = true;
         GameData data = SaveSystem.LoadData();
-        m_InventorySlots = new Items[8];
+
+        ResetInventory();
 
         for (int i = 0; i < data.m_InventorySlots.Length; i++)
         {
@@ -129,5 +132,10 @@ public class InventoryManager : MonoBehaviour
         Debug.Log("Loaded");
         IsLoading = false;
         EventManager.TriggerEvent("Unpause");
+    }
+
+    private void ResetInventory()
+    {
+        m_InventorySlots = new Items[8];
     }
 }

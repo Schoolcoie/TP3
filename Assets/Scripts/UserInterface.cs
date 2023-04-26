@@ -12,6 +12,8 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private GameObject m_InventoryUI;
     [SerializeField] private GameObject m_FishingUI;
 
+    [SerializeField] private Sprite m_DefaultEmptyIcon;
+
     Image[] m_InventoryImages = new Image[8];
 
     // Start is called before the first frame update
@@ -23,6 +25,7 @@ public class UserInterface : MonoBehaviour
         EventManager.StartListening("StopInteracting", HideInteractionUI);
         EventManager.StartListening("Pause", ShowPauseMenu);
         EventManager.StartListening("Unpause", HidePauseMenu);
+        EventManager.StartListening("Reset", ResetInventoryUI);
 
         m_Inventory.AssignListener(UpdateInventory);
 
@@ -35,7 +38,7 @@ public class UserInterface : MonoBehaviour
                 m_InventoryImages[i] = t.GetChild(0).GetComponent<Image>();
                 i++;
             }
-        } 
+        }
     }
 
     private void ShowFishingUI()
@@ -60,10 +63,16 @@ public class UserInterface : MonoBehaviour
 
     private void ShowPauseMenu()
     {
+        Button b = m_PauseMenu.transform.Find("End Game Button").GetComponent<Button>();
+
         if (m_Inventory.CheckIfInventoryIsFilled())
         {
-            Button b = m_PauseMenu.transform.Find("End Game Button").GetComponent<Button>();
+            
             b.interactable = true;
+        }
+        else
+        {
+            b.interactable = false;
         }
         m_PauseMenu.SetActive(true);
     }
@@ -86,5 +95,25 @@ public class UserInterface : MonoBehaviour
     {
         Debug.Log("Game Ended");
         EventManager.TriggerEvent("EndGame");
+        m_PauseMenu.SetActive(false);
+    }
+
+    private void ResetInventoryUI()
+    {
+        for (int i = 0; i < m_InventoryImages.Length; i++)
+        {
+            UpdateInventory(m_DefaultEmptyIcon, i);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.StopListening("MinigameFishing", ShowFishingUI);
+        EventManager.StopListening("OnMinigameEnd", HideFishingUI);
+        EventManager.StopListening("StartInteracting", ShowInteractionUI);
+        EventManager.StopListening("StopInteracting", HideInteractionUI);
+        EventManager.StopListening("Pause", ShowPauseMenu);
+        EventManager.StopListening("Unpause", HidePauseMenu);
+        EventManager.StopListening("Reset", ResetInventoryUI);
     }
 }

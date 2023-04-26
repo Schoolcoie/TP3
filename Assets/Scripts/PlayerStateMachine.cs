@@ -10,10 +10,11 @@ public class PlayerStateMachine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        m_SpawnPosition = transform.position;
         m_CurrentState = new RoamingPlayerState(this);
         EventManager.StartListening("OnMinigameEnd", EndMinigame);
         EventManager.StartListening("OnLoadGame", ResetPosition);
+        EventManager.StartListening("Reset", ResetPosition);
     }
 
     public void ChangeState(PlayerState newState)
@@ -79,6 +80,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         EventManager.StopListening("OnMinigameEnd", EndMinigame);
         EventManager.StopListening("OnLoadGame", ResetPosition);
+        EventManager.StopListening("Reset", ResetPosition);
     }
 }
 

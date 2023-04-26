@@ -9,7 +9,8 @@ public class AudioPool : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
         {
-            AudioSource Source = new GameObject().AddComponent<AudioSource>();
+            AudioSource Source = new GameObject("AudioSource").AddComponent<AudioSource>();
+            Source.transform.parent = this.transform;
             AudioSourcePool.Add(Source);
         }
     }
@@ -24,7 +25,8 @@ public class AudioPool : MonoBehaviour
             }
         }
 
-        AudioSource source = new AudioSource();
+        AudioSource source = new GameObject("AudioSource").AddComponent<AudioSource>();
+        source.transform.parent = this.transform;
         AudioSourcePool.Add(source);
         return source;
     }

@@ -7,6 +7,7 @@ public class FishingPlayerState : PlayerState
 
     public FishingPlayerState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
+        
     }
 
     public override void ExecuteUpdate()

@@ -115,7 +115,7 @@ public class FishingMinigame : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            m_Bobber.AddForce(Vector2.up * 4); //Add bobber speed variable
+            m_Bobber.AddForce(Vector2.up * 3.5f); //Add bobber speed variable
         }
     }
     private IEnumerator FishActionRoutine()

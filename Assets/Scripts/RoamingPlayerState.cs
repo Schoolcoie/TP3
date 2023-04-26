@@ -31,8 +31,6 @@ public class RoamingPlayerState : PlayerState
 
     public override void ExecuteUpdate()
     {
-        
-
         if (m_CanTriggerMinigame)
         {
             if (Input.GetKeyDown(KeyCode.E))
@@ -44,6 +42,7 @@ public class RoamingPlayerState : PlayerState
 
     public override void ExecuteFixedUpdate()
     {
+        Debug.Log("moving");
         float horizontalaxis = Input.GetAxis("Horizontal");
         float verticalaxis = Input.GetAxis("Vertical");
         m_Body.velocity = new Vector3(horizontalaxis * m_Speed, 0, verticalaxis * m_Speed) * Time.deltaTime;
