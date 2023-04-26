@@ -42,6 +42,7 @@ public class RoamingPlayerState : PlayerState
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
+                EventManager.TriggerEvent("StopInteracting");
                 EventManager.TriggerEvent(m_MinigameEventToTrigger);
             }
         }
@@ -71,7 +72,7 @@ public class RoamingPlayerState : PlayerState
             m_MinigameEventToTrigger = other.gameObject.tag;
             m_CanTriggerMinigame = true;
 
-            //show ui for pressing e to start minigame
+            EventManager.TriggerEvent("StartInteracting");
         }
     }
 
@@ -81,6 +82,8 @@ public class RoamingPlayerState : PlayerState
         {
             m_MinigameEventToTrigger = null;
             m_CanTriggerMinigame = false;
+
+            EventManager.TriggerEvent("StopInteracting");
         }
     }
 }

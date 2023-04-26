@@ -16,6 +16,7 @@ public class ForagingPlayerState : PlayerState
 
     private void StopForaging()
     {
+        EventManager.StopListening("OnMinigameEnd", StopForaging);
         AudioManager.GetInstance().StopLoopingSound(AudioManager.SoundEnum.TreeChopping);
         m_StateMachine.ChangeState(new RoamingPlayerState(m_StateMachine));
     }

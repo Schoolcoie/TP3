@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
-    private static InventoryManager Instance;
+    private static InventoryManager m_Instance;
     void Start()
     {
-        if (Instance == null)
+        if (m_Instance == null)
         {
-            Instance = this;
+            m_Instance = this;
         }
 
         EventManager.StartListening("OnLoadGame", LoadGame);
@@ -21,7 +21,7 @@ public class InventoryManager : MonoBehaviour
 
     public static InventoryManager GetInstance()
     {
-        return Instance;
+        return m_Instance;
     }
 
     private void Awake()
@@ -32,7 +32,7 @@ public class InventoryManager : MonoBehaviour
     private Items[] m_InventorySlots = new Items[8];
     public Items[] inventoryslots => m_InventorySlots;
     private Action<Sprite, int> OnInventoryAdd;
-    private bool IsLoading = false;
+    private bool m_IsLoading = false;
 
     [System.Serializable]
     public enum Items
@@ -80,7 +80,7 @@ public class InventoryManager : MonoBehaviour
                 m_InventorySlots[i] = item;
                 indexref = i;
 
-                if (!IsLoading)
+                if (!m_IsLoading)
                     SaveSystem.SaveData(this);
                 break;
             }
@@ -99,7 +99,6 @@ public class InventoryManager : MonoBehaviour
                 {
                     Debug.Log("Inventory is full");
                 }
-                   
             }
         }
     }
@@ -110,17 +109,15 @@ public class InventoryManager : MonoBehaviour
         {
             if (m_InventorySlots[i] == Items.Nothing)
             {
-                print("Inventory slot empty");
                 return false;
             }
-            print("Inventory slot filled");
         }
         return true;
     }
 
     private void LoadGame()
     {
-        IsLoading = true;
+        m_IsLoading = true;
         GameData data = SaveSystem.LoadData();
 
         ResetInventory();
@@ -131,7 +128,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         Debug.Log("Loaded");
-        IsLoading = false;
+        m_IsLoading = false;
         EventManager.TriggerEvent("Unpause");
     }
 

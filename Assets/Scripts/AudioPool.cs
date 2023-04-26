@@ -4,30 +4,30 @@ using UnityEngine;
 
 public class AudioPool : MonoBehaviour
 {
-    private List<AudioSource> AudioSourcePool = new List<AudioSource>();
+    private List<AudioSource> m_AudioSourcePool = new List<AudioSource>();
     void Start()
     {
         for (int i = 0; i < 5; i++)
         {
             AudioSource Source = new GameObject("AudioSource").AddComponent<AudioSource>();
             Source.transform.parent = this.transform;
-            AudioSourcePool.Add(Source);
+            m_AudioSourcePool.Add(Source);
         }
     }
 
     public AudioSource GetValidAudioSource()
     {
-        for (int i = 0; i < AudioSourcePool.Count; i++)
+        for (int i = 0; i < m_AudioSourcePool.Count; i++)
         {
-            if (!AudioSourcePool[i].isPlaying)
+            if (!m_AudioSourcePool[i].isPlaying)
             {
-                return AudioSourcePool[i];
+                return m_AudioSourcePool[i];
             }
         }
 
         AudioSource source = new GameObject("AudioSource").AddComponent<AudioSource>();
         source.transform.parent = this.transform;
-        AudioSourcePool.Add(source);
+        m_AudioSourcePool.Add(source);
         return source;
     }
 }

@@ -2545,7 +2545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe4b9046a1f04549b1fa3bf46f5a74c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pool: {fileID: 83899627}
+  m_Pool: {fileID: 83899627}
   SoundAssociations:
   - Name: 1
     Clip: {fileID: 8300000, guid: 27c17e0aefcb2db4fa735b617789019e, type: 3}
@@ -2713,7 +2713,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 150}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1260777246

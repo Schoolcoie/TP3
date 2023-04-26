@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    private static AudioManager Instance;
-    public AudioPool Pool;
+    private static AudioManager m_Instance;
+    public AudioPool m_Pool;
 
     [System.Serializable]
     private struct SoundStruct
@@ -32,9 +32,9 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        if (Instance == null)
+        if (m_Instance == null)
         {
-            Instance = this;
+            m_Instance = this;
         }
 
         PlayLoopingSound(SoundEnum.BGM);
@@ -42,7 +42,7 @@ public class AudioManager : MonoBehaviour
 
     public static AudioManager GetInstance()
     {
-        return Instance;
+        return m_Instance;
     }
 
     private void Awake()
@@ -52,7 +52,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySound(SoundEnum sound)
     {
-        AudioSource source = Pool.GetValidAudioSource();
+        AudioSource source = m_Pool.GetValidAudioSource();
 
         for (int i = 0; i < SoundAssociations.Count; i++)
         {
@@ -67,7 +67,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayLoopingSound(SoundEnum sound)
     {
-        AudioSource source = Pool.GetValidAudioSource();
+        AudioSource source = m_Pool.GetValidAudioSource();
 
         for (int i = 0; i < SoundAssociations.Count; i++)
         {
@@ -83,9 +83,9 @@ public class AudioManager : MonoBehaviour
 
     public void StopLoopingSound(SoundEnum sound)
     {
-        for (int i = 0; i < Pool.transform.childCount; i++)
+        for (int i = 0; i < m_Pool.transform.childCount; i++)
         {
-            AudioSource source = Pool.transform.GetChild(i).GetComponent<AudioSource>();
+            AudioSource source = m_Pool.transform.GetChild(i).GetComponent<AudioSource>();
             if (source.isPlaying)
             {
                 for (int y = 0; y < SoundAssociations.Count; y++)
@@ -102,9 +102,9 @@ public class AudioManager : MonoBehaviour
 
     public bool IsSoundAlreadyPlaying(SoundEnum sound)
     {
-        for (int i = 0; i < Pool.transform.childCount; i++)
+        for (int i = 0; i < m_Pool.transform.childCount; i++)
         {
-            AudioSource source = Pool.transform.GetChild(i).GetComponent<AudioSource>();
+            AudioSource source = m_Pool.transform.GetChild(i).GetComponent<AudioSource>();
             if (source.isPlaying)
             {
                 for (int y = 0; y < SoundAssociations.Count; y++)
@@ -123,6 +123,6 @@ public class AudioManager : MonoBehaviour
     private void OnLevelWasLoaded(int level)
     {
         if (FindObjectOfType<AudioPool>() != null)
-            Pool = FindObjectOfType<AudioPool>();
+            m_Pool = FindObjectOfType<AudioPool>();
     }
 }
