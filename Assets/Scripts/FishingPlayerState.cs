@@ -12,6 +12,12 @@ public class FishingPlayerState : PlayerState
 
     private void StopFishing()
     {
+        if (AudioManager.GetInstance().IsSoundAlreadyPlaying(AudioManager.SoundEnum.BossMusic))
+        {
+            AudioManager.GetInstance().StopLoopingSound(AudioManager.SoundEnum.BossMusic);
+            AudioManager.GetInstance().PlayLoopingSound(AudioManager.SoundEnum.BGM);
+        }
+
         AudioManager.GetInstance().StopLoopingSound(AudioManager.SoundEnum.FishEscaping);
         AudioManager.GetInstance().StopLoopingSound(AudioManager.SoundEnum.FishReeling);
         EventManager.StopListening("OnMinigameEnd", StopFishing);

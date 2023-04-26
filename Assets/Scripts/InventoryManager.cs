@@ -41,7 +41,8 @@ public class InventoryManager : MonoBehaviour
         Carp,
         Pike,
         Piranha,
-        KingFish
+        KingFish,
+        Wood
     }
 
     [System.Serializable]

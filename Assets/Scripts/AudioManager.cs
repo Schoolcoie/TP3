@@ -18,13 +18,16 @@ public class AudioManager : MonoBehaviour
 
     public enum SoundEnum
     {
-        Win,
-        Lose,
         EndGame,
         FishReeling,
         FishEscaping,
         FishCaught,
-        FishLost
+        FishLost,
+        TreeChopping,
+        TreeFalling,
+        AxeBreaking,
+        BGM,
+        BossMusic
     }
 
     void Start()
@@ -33,6 +36,8 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
         }
+
+        PlayLoopingSound(SoundEnum.BGM);
     }
 
     public static AudioManager GetInstance()
@@ -93,6 +98,26 @@ public class AudioManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public bool IsSoundAlreadyPlaying(SoundEnum sound)
+    {
+        for (int i = 0; i < Pool.transform.childCount; i++)
+        {
+            AudioSource source = Pool.transform.GetChild(i).GetComponent<AudioSource>();
+            if (source.isPlaying)
+            {
+                for (int y = 0; y < SoundAssociations.Count; y++)
+                {
+                    if (SoundAssociations[y].Clip == source.clip && SoundAssociations[y].Name == sound)
+                    {
+                        return true;
+                    }
+                }
+                
+            }
+        }
+        return false;
     }
 
     private void OnLevelWasLoaded(int level)

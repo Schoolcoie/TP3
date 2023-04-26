@@ -11,21 +11,29 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private GameObject m_InteractUI;
     [SerializeField] private GameObject m_InventoryUI;
     [SerializeField] private GameObject m_FishingUI;
+    [SerializeField] private GameObject m_ForagingUI;
+
+    Image[] m_InventoryImages = new Image[8];
 
     [SerializeField] private Sprite m_DefaultEmptyIcon;
 
-    Image[] m_InventoryImages = new Image[8];
+    //Foraging minigame
+    [SerializeField] private Text m_ClicksText;
+    private int m_Clicks;
 
     // Start is called before the first frame update
     void Start()
     {
         EventManager.StartListening("MinigameFishing", ShowFishingUI);
+        EventManager.StartListening("MinigameForaging", ShowForagingUI);
         EventManager.StartListening("OnMinigameEnd", HideFishingUI);
+        EventManager.StartListening("OnMinigameEnd", HideForagingUI);
         EventManager.StartListening("StartInteracting", ShowInteractionUI);
         EventManager.StartListening("StopInteracting", HideInteractionUI);
         EventManager.StartListening("Pause", ShowPauseMenu);
         EventManager.StartListening("Unpause", HidePauseMenu);
         EventManager.StartListening("Reset", ResetInventoryUI);
+        EventManager.StartListening("OnForageClick", UpdateClicks);
 
         m_Inventory.AssignListener(UpdateInventory);
 
@@ -49,6 +57,17 @@ public class UserInterface : MonoBehaviour
     private void HideFishingUI()
     {
         m_FishingUI.SetActive(false);
+    }
+    private void ShowForagingUI()
+    {
+        m_ForagingUI.SetActive(true);
+    }
+
+    private void HideForagingUI()
+    {
+        m_Clicks = 0;
+        m_ClicksText.text = "0";
+        m_ForagingUI.SetActive(false);
     }
 
     private void ShowInteractionUI()
@@ -85,18 +104,7 @@ public class UserInterface : MonoBehaviour
     {
         m_InventoryImages[index].sprite = icon;
     }
-    public void LoadGameButton()
-    {
-        EventManager.TriggerEvent("OnLoadGame");
-    }
-
-    public void EndGameButton()
-    {
-        Debug.Log("Game Ended");
-        EventManager.TriggerEvent("EndGame");
-        m_PauseMenu.SetActive(false);
-    }
-
+  
     private void ResetInventoryUI()
     {
         for (int i = 0; i < m_InventoryImages.Length; i++)
@@ -105,14 +113,36 @@ public class UserInterface : MonoBehaviour
         }
     }
 
+    private void UpdateClicks()
+    {
+        m_Clicks += 1;
+        m_ClicksText.text = m_Clicks.ToString();
+    }
+
+    public void LoadGameButton()
+    {
+        EventManager.TriggerEvent("OnLoadGame");
+    }
+
+    public void EndGameButton()
+    {
+        AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.EndGame);
+        EventManager.TriggerEvent("EndGame");
+        m_PauseMenu.SetActive(false);
+    }
+
+
     private void OnDestroy()
     {
         EventManager.StopListening("MinigameFishing", ShowFishingUI);
+        EventManager.StopListening("MinigameForaging", ShowForagingUI);
         EventManager.StopListening("OnMinigameEnd", HideFishingUI);
+        EventManager.StopListening("OnMinigameEnd", HideForagingUI);
         EventManager.StopListening("StartInteracting", ShowInteractionUI);
         EventManager.StopListening("StopInteracting", HideInteractionUI);
         EventManager.StopListening("Pause", ShowPauseMenu);
         EventManager.StopListening("Unpause", HidePauseMenu);
         EventManager.StopListening("Reset", ResetInventoryUI);
+        EventManager.StopListening("OnForageClick", UpdateClicks);
     }
 }

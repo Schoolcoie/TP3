@@ -50,6 +50,13 @@ public class FishingMinigame : MonoBehaviour
         m_FishDifficulty = m_CurrentFish.Difficulty;
         m_FishMovementInterval = m_CurrentFish.MovementInterval;
         m_IsReeling = false;
+
+        if (m_CurrentFish.ItemDrop == InventoryManager.Items.KingFish)
+        {
+            AudioManager.GetInstance().StopLoopingSound(AudioManager.SoundEnum.BGM);
+            AudioManager.GetInstance().PlayLoopingSound(AudioManager.SoundEnum.BossMusic);
+        }
+
         StartCoroutine(FishActionRoutine());
     }
 
@@ -76,7 +83,7 @@ public class FishingMinigame : MonoBehaviour
                 AudioManager.GetInstance().StopLoopingSound(AudioManager.SoundEnum.FishEscaping);
                 AudioManager.GetInstance().PlayLoopingSound(AudioManager.SoundEnum.FishReeling);
             }
-            m_FishCatchProgress += 10 * Time.deltaTime; //add variables for progress decay and progress gain
+            m_FishCatchProgress += 15 * Time.deltaTime; //add variables for progress decay and progress gain
             m_IsReeling = true;
         }
         else
@@ -86,7 +93,7 @@ public class FishingMinigame : MonoBehaviour
                 AudioManager.GetInstance().StopLoopingSound(AudioManager.SoundEnum.FishReeling);
                 AudioManager.GetInstance().PlayLoopingSound(AudioManager.SoundEnum.FishEscaping);
             }
-            m_FishCatchProgress -= 15 * Time.deltaTime;
+            m_FishCatchProgress -= 10 * Time.deltaTime;
             m_IsReeling = false;
         }
 

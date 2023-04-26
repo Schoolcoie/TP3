@@ -13,6 +13,7 @@ public class RoamingPlayerState : PlayerState
     {
         m_Body = stateMachine.GetComponent<Rigidbody>();
         EventManager.StartListening("MinigameFishing", StartFishing);
+        EventManager.StartListening("MinigameForaging", StartForaging);
         EventManager.StartListening("Pause", Pause);
     }
 
@@ -21,9 +22,15 @@ public class RoamingPlayerState : PlayerState
         m_StateMachine.ChangeState(new FishingPlayerState(m_StateMachine));
     }
 
+    private void StartForaging()
+    {
+        m_StateMachine.ChangeState(new ForagingPlayerState(m_StateMachine));
+    }
+
     private void Pause()
     {
         EventManager.StopListening("MinigameFishing", StartFishing);
+        EventManager.StopListening("MinigameForaging", StartForaging);
         EventManager.StopListening("Pause", Pause);
         m_StateMachine.ChangeState(new PausedPlayerState(m_StateMachine));
     }
@@ -42,7 +49,6 @@ public class RoamingPlayerState : PlayerState
 
     public override void ExecuteFixedUpdate()
     {
-        Debug.Log("moving");
         float horizontalaxis = Input.GetAxis("Horizontal");
         float verticalaxis = Input.GetAxis("Vertical");
         m_Body.velocity = new Vector3(horizontalaxis * m_Speed, 0, verticalaxis * m_Speed) * Time.deltaTime;
