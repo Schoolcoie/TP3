@@ -53,8 +53,6 @@ public class EventManager : MonoBehaviour
             thisEvent += listener;
             instance.eventDictionary.Add(eventName, thisEvent);
         }
-
-        Debug.Log("Started Listening");
     }
 
     public static void StopListening(string eventName, Action listener)

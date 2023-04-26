@@ -66,8 +66,7 @@ public class UserInterface : MonoBehaviour
         Button b = m_PauseMenu.transform.Find("End Game Button").GetComponent<Button>();
 
         if (m_Inventory.CheckIfInventoryIsFilled())
-        {
-            
+        {  
             b.interactable = true;
         }
         else

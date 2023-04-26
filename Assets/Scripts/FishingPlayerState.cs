@@ -7,7 +7,14 @@ public class FishingPlayerState : PlayerState
 
     public FishingPlayerState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
-        
+        EventManager.StartListening("OnMinigameEnd", StopFishing);
+    }
+
+    private void StopFishing()
+    {
+        AudioManager.GetInstance().StopLoopingSound(AudioManager.SoundEnum.FishEscaping);
+        AudioManager.GetInstance().StopLoopingSound(AudioManager.SoundEnum.FishReeling);
+        EventManager.StopListening("OnMinigameEnd", StopFishing);
     }
 
     public override void ExecuteUpdate()

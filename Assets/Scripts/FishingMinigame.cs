@@ -18,7 +18,7 @@ public class FishingMinigame : MonoBehaviour
     private float m_FishCatchProgress = 100;
     private float m_Ceiling;
     private float m_Floor;
-    private bool m_IsReeling = false;
+    private bool m_IsReeling;
 
     //Fish Stats
     private Texture2D m_FishIcon;
@@ -49,6 +49,7 @@ public class FishingMinigame : MonoBehaviour
         m_FishCatchProgress = 50;
         m_FishDifficulty = m_CurrentFish.Difficulty;
         m_FishMovementInterval = m_CurrentFish.MovementInterval;
+        m_IsReeling = false;
         StartCoroutine(FishActionRoutine());
     }
 
@@ -72,7 +73,8 @@ public class FishingMinigame : MonoBehaviour
         {
             if (m_IsReeling == false)
             {
-                AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishReeling);
+                AudioManager.GetInstance().StopLoopingSound(AudioManager.SoundEnum.FishEscaping);
+                AudioManager.GetInstance().PlayLoopingSound(AudioManager.SoundEnum.FishReeling);
             }
             m_FishCatchProgress += 10 * Time.deltaTime; //add variables for progress decay and progress gain
             m_IsReeling = true;
@@ -81,7 +83,8 @@ public class FishingMinigame : MonoBehaviour
         {
             if (m_IsReeling == true)
             {
-                AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishEscaping);
+                AudioManager.GetInstance().StopLoopingSound(AudioManager.SoundEnum.FishReeling);
+                AudioManager.GetInstance().PlayLoopingSound(AudioManager.SoundEnum.FishEscaping);
             }
             m_FishCatchProgress -= 15 * Time.deltaTime;
             m_IsReeling = false;
