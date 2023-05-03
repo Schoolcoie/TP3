@@ -64,18 +64,6 @@ public class FishingMinigame : MonoBehaviour
     {
         m_ProgressBar.transform.localScale = new Vector3(m_ProgressBar.transform.localScale.x, (m_FishCatchProgress / 100), m_ProgressBar.transform.localScale.z);
 
-        if (m_FishCatchProgress > 100)
-        {
-            InventoryManager.GetInstance().AddInventoryItem(m_CurrentFish.itemdrop);
-            AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishCaught);
-            EventManager.TriggerEvent("OnMinigameEnd");
-        }
-        else if (m_FishCatchProgress < 0)
-        {
-            AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishLost);
-            EventManager.TriggerEvent("OnMinigameEnd");
-        }
-
         if (Mathf.Abs(m_Bobber.transform.localPosition.y - m_FishBody.transform.localPosition.y) <= 12) //add variable for bobber range
         {
             if (m_IsReeling == false)
@@ -97,6 +85,17 @@ public class FishingMinigame : MonoBehaviour
             m_IsReeling = false;
         }
 
+        if (m_FishCatchProgress > 100)
+        {
+            InventoryManager.GetInstance().AddInventoryItem(m_CurrentFish.itemdrop);
+            AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishCaught);
+            EventManager.TriggerEvent("OnMinigameEnd");
+        }
+        else if (m_FishCatchProgress < 0)
+        {
+            AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishLost);
+            EventManager.TriggerEvent("OnMinigameEnd");
+        }
 
         if (m_Bobber.transform.localPosition.y > m_Ceiling)
         {

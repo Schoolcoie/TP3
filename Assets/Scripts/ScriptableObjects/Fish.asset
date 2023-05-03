@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FishList:
   - itemdrop: 1
-    difficulty: 21
+    difficulty: 34
     movementinterval: 2
   - itemdrop: 2
-    difficulty: 48
-    movementinterval: 1.5
+    difficulty: 60
+    movementinterval: 1.75
   - itemdrop: 3
-    difficulty: 14
-    movementinterval: 0.3
+    difficulty: 20
+    movementinterval: 0.25
   - itemdrop: 4
-    difficulty: 34
+    difficulty: 45
     movementinterval: 0.75
