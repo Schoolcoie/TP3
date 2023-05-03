@@ -11,8 +11,8 @@ public class FishingMinigame : MonoBehaviour
     [SerializeField] private GameObject m_ProgressBar;
 
     //Minigame Stats
-    private List<Fish.Fishes> m_PossibleFish;
-    private Fish.Fishes m_CurrentFish;
+    private List<Fish.FishStruct> m_PossibleFish;
+    private Fish.FishStruct m_CurrentFish;
     private Vector3 m_FishInitialPosition;
     private Vector3 m_BobberInitialPosition;
     private float m_FishCatchProgress = 100;
@@ -41,17 +41,17 @@ public class FishingMinigame : MonoBehaviour
     private void Init()
     {  
         m_CurrentFish = m_PossibleFish[Random.Range(0, m_PossibleFish.Count)];
-        Debug.Log($"Current fish is: {m_CurrentFish.ItemDrop.ToString()}");
+        Debug.Log($"Current fish is: {m_CurrentFish.itemdrop.ToString()}");
         m_Bobber.transform.localPosition = m_BobberInitialPosition;
         m_FishBody.transform.localPosition = m_FishInitialPosition;
         m_Ceiling = gameObject.transform.Find("TopEdge").transform.localPosition.y;
         m_Floor = gameObject.transform.Find("BottomEdge").transform.localPosition.y;
         m_FishCatchProgress = 50;
-        m_FishDifficulty = m_CurrentFish.Difficulty;
-        m_FishMovementInterval = m_CurrentFish.MovementInterval;
+        m_FishDifficulty = m_CurrentFish.difficulty;
+        m_FishMovementInterval = m_CurrentFish.movementinterval;
         m_IsReeling = false;
 
-        if (m_CurrentFish.ItemDrop == InventoryManager.Items.KingFish)
+        if (m_CurrentFish.itemdrop == InventoryManager.Items.KingFish)
         {
             AudioManager.GetInstance().StopLoopingSound(AudioManager.SoundEnum.BGM);
             AudioManager.GetInstance().PlayLoopingSound(AudioManager.SoundEnum.BossMusic);
@@ -66,7 +66,7 @@ public class FishingMinigame : MonoBehaviour
 
         if (m_FishCatchProgress > 100)
         {
-            InventoryManager.GetInstance().AddInventoryItem(m_CurrentFish.ItemDrop);
+            InventoryManager.GetInstance().AddInventoryItem(m_CurrentFish.itemdrop);
             AudioManager.GetInstance().PlaySound(AudioManager.SoundEnum.FishCaught);
             EventManager.TriggerEvent("OnMinigameEnd");
         }

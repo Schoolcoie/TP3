@@ -7,14 +7,14 @@ public class Fish : ScriptableObject
 {
 
     [System.Serializable]
-    public struct Fishes
+    public struct FishStruct
     {
-        public InventoryManager.Items ItemDrop;
-        public int Difficulty;
-        public float MovementInterval;
+        public InventoryManager.Items itemdrop;
+        public int difficulty;
+        public float movementinterval;
     }
 
-    public List<Fishes> FishList = new List<Fishes>();
+    public List<FishStruct> FishList = new List<FishStruct>();
 }
 
    

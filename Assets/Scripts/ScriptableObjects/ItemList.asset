@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 331a1351d36eedd43a831f084dcd89d2, type: 3}
+  m_Name: ItemList
+  m_EditorClassIdentifier: 
+  ItemData:
+  - item: 1
+    name: CARP
+    icon: {fileID: 21300000, guid: 30a673d7a62378e47932c8f347005f24, type: 3}
+  - item: 2
+    name: PIKE
+    icon: {fileID: 21300000, guid: 565da5a2126ed1f428947848c74c6ed9, type: 3}
+  - item: 3
+    name: PIRANHA
+    icon: {fileID: 21300000, guid: d222e8b78ddad0641b5f6711f0962747, type: 3}
+  - item: 4
+    name: KING_FISH
+    icon: {fileID: 21300000, guid: e2b1625f941458747aa0da2bec744c66, type: 3}
+  - item: 5
+    name: WOODEN_PLANK
+    icon: {fileID: 21300000, guid: 5b53bf3f3b5212d4393c78d7d578e2ef, type: 3}

@@ -10,7 +10,5 @@ public class GameData
     public GameData(InventoryManager inventoryManager)
     {
         m_InventorySlots = inventoryManager.inventoryslots;
-
-        Debug.Log("Saved inventory");
     }
 }

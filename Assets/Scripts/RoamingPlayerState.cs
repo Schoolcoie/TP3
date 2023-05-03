@@ -66,7 +66,6 @@ public class RoamingPlayerState : PlayerState
     {
         EventManager.TriggerEvent("StartInteraction");
 
-        Debug.Log(other.name);
         if (other.gameObject.tag.Contains("Minigame"))
         {
             m_MinigameEventToTrigger = other.gameObject.tag;

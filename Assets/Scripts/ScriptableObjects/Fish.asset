@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: Fish
   m_EditorClassIdentifier: 
   FishList:
-  - ItemDrop: 1
-    Difficulty: 23
-    MovementInterval: 2
-  - ItemDrop: 2
-    Difficulty: 36
-    MovementInterval: 1.5
-  - ItemDrop: 3
-    Difficulty: 12
-    MovementInterval: 0.25
-  - ItemDrop: 4
-    Difficulty: 27
-    MovementInterval: 0.5
+  - itemdrop: 1
+    difficulty: 21
+    movementinterval: 2
+  - itemdrop: 2
+    difficulty: 48
+    movementinterval: 1.5
+  - itemdrop: 3
+    difficulty: 14
+    movementinterval: 0.3
+  - itemdrop: 4
+    difficulty: 34
+    movementinterval: 0.75

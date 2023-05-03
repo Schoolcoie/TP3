@@ -31,6 +31,7 @@ public class InventoryManager : MonoBehaviour
 
     private Items[] m_InventorySlots = new Items[8];
     public Items[] inventoryslots => m_InventorySlots;
+    [SerializeField] private Item m_ItemSO;
     private Action<Sprite, int> OnInventoryAdd;
     private bool m_IsLoading = false;
 
@@ -44,16 +45,6 @@ public class InventoryManager : MonoBehaviour
         KingFish,
         Wood
     }
-
-    [System.Serializable]
-    private struct ItemStruct
-    {
-        public Items item;
-        public string name;
-        public Sprite icon;
-    }
-
-    [SerializeField] private List<ItemStruct> ItemData;
 
     private void Update()
     {
@@ -86,13 +77,13 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        for (int y = 0; y < ItemData.Count; y++)
+        for (int y = 0; y < m_ItemSO.ItemData.Count; y++)
         {
-            if (ItemData[y].item == item)
+            if (m_ItemSO.ItemData[y].item == item)
             {
                 if (indexref > -1)
                 {
-                    OnInventoryAdd?.Invoke(ItemData[y].icon, indexref);
+                    OnInventoryAdd?.Invoke(m_ItemSO.ItemData[y].icon, indexref);
                     break;
                 }
                 else
