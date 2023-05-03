@@ -17,11 +17,11 @@ MonoBehaviour:
     difficulty: 24
     movementinterval: 1
   - itemdrop: 2
-    difficulty: 60
+    difficulty: 56
     movementinterval: 1.75
   - itemdrop: 3
     difficulty: 16
     movementinterval: 0.3
   - itemdrop: 4
-    difficulty: 40
+    difficulty: 39
     movementinterval: 0.75

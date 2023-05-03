@@ -21,8 +21,6 @@ public class FishingMinigame : MonoBehaviour
     private bool m_IsReeling;
 
     //Fish Stats
-    private Texture2D m_FishIcon;
-    private string m_FishName;
     private int m_FishDifficulty;
     private float m_FishMovementInterval;
 
